@@ -30,34 +30,8 @@
             <h2 class="section-title">Our Design Gallery</h2>
             <p class="section-description">Browse through our collection of children's fashion designs and handcrafted candles. Each piece is created with love and attention to detail.</p>
             
-            <div class="gallery-grid">
+            <div class="gallery-grid" id="gallery-grid">
                 <!-- Gallery items will be added here dynamically -->
-                <div class="gallery-item">
-                    <p class="image-placeholder">Fashion Design 1</p>
-                </div>
-                <div class="gallery-item">
-                    <p class="image-placeholder">Fashion Design 2</p>
-                </div>
-                <div class="gallery-item">
-                    <p class="image-placeholder">Fashion Design 3</p>
-                </div>
-                <div class="gallery-item">
-                    <p class="image-placeholder">Candle Design 1</p>
-                </div>
-                <div class="gallery-item">
-                    <p class="image-placeholder">Candle Design 2</p>
-                </div>
-                <div class="gallery-item">
-                    <p class="image-placeholder">Fashion Design 4</p>
-                </div>
-            </div>
-            
-            <div class="upload-container">
-                <h3>Add New Images</h3>
-                <p>Upload new photos of your designs to showcase in the gallery.</p>
-                <button id="upload-btn" class="upload-btn">Upload Images</button>
-                <input type="file" id="file-input" multiple accept="image/*" style="display: none;">
-                <p class="upload-note">Supported formats: JPG, PNG, GIF. Maximum file size: 5MB</p>
             </div>
         </div>
     </section>
@@ -102,3 +76,41 @@
 
 </body>
 </html>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const galleryGrid = document.getElementById('gallery-grid');
+    fetch('images/gallery/')
+        .then(response => response.text())
+        .then(data => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(data, 'text/html');
+            const links = htmlDoc.querySelectorAll('a');
+            let imageCount = 0;
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && (href.endsWith('.jpg') || href.endsWith('.jpeg') || href.endsWith('.png') || href.endsWith('.gif'))) {
+                    const div = document.createElement('div');
+                    div.className = 'gallery-item';
+                    const img = document.createElement('img');
+                    img.src = 'images/gallery/' + href;
+                    img.alt = href;
+                    div.appendChild(img);
+                    galleryGrid.appendChild(div);
+                    imageCount++;
+                }
+            });
+            if (imageCount === 0) {
+                const placeholder = document.createElement('p');
+                placeholder.className = 'image-placeholder';
+                placeholder.textContent = 'No images available in the gallery.';
+                galleryGrid.appendChild(placeholder);
+            }
+        })
+        .catch(() => {
+            const placeholder = document.createElement('p');
+            placeholder.className = 'image-placeholder';
+            placeholder.textContent = 'No images available in the gallery.';
+            galleryGrid.appendChild(placeholder);
+        });
+});
+</script>

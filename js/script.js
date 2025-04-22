@@ -25,62 +25,6 @@ function initTestimonialSlider() {
     }, 5000);
 }
 
-// Gallery functionality
-function initGallery() {
-    const uploadBtn = document.getElementById('upload-btn');
-    const fileInput = document.getElementById('file-input');
-    
-    if (uploadBtn && fileInput) {
-        uploadBtn.addEventListener('click', () => {
-            fileInput.click();
-        });
-        
-        fileInput.addEventListener('change', handleFileUpload);
-    }
-}
-
-// Handle file upload for gallery
-function handleFileUpload(event) {
-    const files = event.target.files;
-    if (!files || files.length === 0) return;
-    
-    const galleryGrid = document.querySelector('.gallery-grid');
-    if (!galleryGrid) return;
-    
-    // Process each selected file
-    for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        
-        // Only process image files
-        if (!file.type.match('image.*')) continue;
-        
-        const reader = new FileReader();
-        
-        reader.onload = function(e) {
-            // Create new gallery item
-            const galleryItem = document.createElement('div');
-            galleryItem.className = 'gallery-item';
-            
-            // Create image element
-            const img = document.createElement('img');
-            img.src = e.target.result;
-            img.alt = file.name;
-            
-            // Add image to gallery item
-            galleryItem.appendChild(img);
-            
-            // Add gallery item to grid
-            galleryGrid.appendChild(galleryItem);
-        };
-        
-        // Read the image file as a data URL
-        reader.readAsDataURL(file);
-    }
-    
-    // Reset file input
-    event.target.value = '';
-}
-
 // Booking calendar functionality
 function initBookingForm() {
     // Handle booking form submission
