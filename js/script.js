@@ -25,25 +25,18 @@ function initTestimonialSlider() {
     }, 5000);
 }
 
-// Booking calendar functionality
+// Booking form functionality
 function initBookingForm() {
     // Handle booking form submission
     const bookingForm = document.getElementById('booking-form');
     if (bookingForm) {
-        bookingForm.addEventListener('submit', handleBookingSubmission);
+        bookingForm.addEventListener('submit', function(event) {
+            // Booking form submission is now handled by EmailJS in email-handler.js
+            // Prevent default and show a message if needed, or remove this handler if not required
+            event.preventDefault();
+            // Optionally, you can remove this block if not needed
+        });
     }
-}
-
-// Booking form functionality is now handled by handleBookingSubmission
-// Calendar functionality has been removed as we now use a contact form approach
-
-// Handle booking form submission
-// Form submission is now handled by email-handler.js
-// This function is kept for reference but is no longer used
-function handleBookingSubmission(event) {
-    // This function has been replaced by the client-side EmailJS implementation
-    // See js/email-handler.js for the new implementation
-    console.log('This function is deprecated. Using EmailJS instead.');
 }
 
 // Mobile navigation functionality

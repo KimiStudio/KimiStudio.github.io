@@ -24,6 +24,7 @@
             </nav>
         </div>
     </header>
+    <button id="theme-toggle" aria-label="Toggle dark mode" style="position:absolute;top:20px;right:20px;background:var(--btn-bg,#333);color:var(--btn-color,#fff);border:none;border-radius:50%;width:44px;height:44px;cursor:pointer;transition:background 0.3s;"><i class="fas fa-moon"></i></button>
 
     <section class="gallery">
         <div class="container">
@@ -75,43 +76,73 @@
     </footer>
 
     <script src="js/transitions.js"></script>
+    <script src="js/theme-toggle.js"></script>
 </body>
 </html>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const galleryGrid = document.getElementById('gallery-grid');
-    fetch('images/gallery/')
-        .then(response => response.text())
-        .then(data => {
-            const parser = new DOMParser();
-            const htmlDoc = parser.parseFromString(data, 'text/html');
-            const links = htmlDoc.querySelectorAll('a');
-            let imageCount = 0;
-            links.forEach(link => {
-                const href = link.getAttribute('href');
-                if (href && (href.endsWith('.jpg') || href.endsWith('.jpeg') || href.endsWith('.png') || href.endsWith('.gif'))) {
-                    const div = document.createElement('div');
-                    div.className = 'gallery-item';
-                    const img = document.createElement('img');
-                    img.src = 'images/gallery/' + href;
-                    img.alt = href;
-                    div.appendChild(img);
-                    galleryGrid.appendChild(div);
-                    imageCount++;
-                }
-            });
-            if (imageCount === 0) {
-                const placeholder = document.createElement('p');
-                placeholder.className = 'image-placeholder';
-                placeholder.textContent = 'No images available in the gallery.';
-                galleryGrid.appendChild(placeholder);
-            }
-        })
-        .catch(() => {
-            const placeholder = document.createElement('p');
-            placeholder.className = 'image-placeholder';
-            placeholder.textContent = 'No images available in the gallery.';
-            galleryGrid.appendChild(placeholder);
-        });
+
+    const imageFiles = ['Project1.jpg']; // Add more as needed
+
+    if (imageFiles.length === 0) {
+        const placeholder = document.createElement('p');
+        placeholder.className = 'image-placeholder';
+        placeholder.textContent = 'No images available in the gallery.';
+        galleryGrid.appendChild(placeholder);
+        return;
+    }
+
+    imageFiles.forEach(filename => {
+        const div = document.createElement('div');
+        div.className = 'gallery-item';
+
+        const img = document.createElement('img');
+        img.src = 'images/gallery/' + filename; // relative path
+        img.alt = filename;
+        img.style.objectFit = 'contain';
+        img.style.padding = '1rem';
+
+        div.appendChild(img);
+        galleryGrid.appendChild(div);
+    });
 });
+// document.addEventListener('DOMContentLoaded', function() {
+//     const galleryGrid = document.getElementById('gallery-grid');
+//     fetch('images/gallery/')
+//         .then(response => response.text())
+//         .then(data => {
+//             const parser = new DOMParser();
+//             const htmlDoc = parser.parseFromString(data, 'text/html');
+//             const links = htmlDoc.querySelectorAll('a');
+//             let imageCount = 0;
+//             links.forEach(link => {
+//                 const href = link.getAttribute('href');
+//                 if (href && (href.endsWith('.jpg') || href.endsWith('.jpeg') || href.endsWith('.png') || href.endsWith('.gif'))) {
+//                     const div = document.createElement('div');
+//                     div.className = 'gallery-item';
+//                     const img = document.createElement('img');
+//                     img.src = 'images/gallery/' + href; // Removed leading slash
+//                     img.alt = href;
+//                     img.style.objectFit = 'contain';
+//                     img.style.padding = '1rem';
+//                     div.appendChild(img);
+//                     galleryGrid.appendChild(div);
+//                     imageCount++;
+//                 }
+//             });
+//             if (imageCount === 0) {
+//                 const placeholder = document.createElement('p');
+//                 placeholder.className = 'image-placeholder';
+//                 placeholder.textContent = 'No images available in the gallery.';
+//                 galleryGrid.appendChild(placeholder);
+//             }
+//         })
+//         .catch(() => {
+//             const placeholder = document.createElement('p');
+//             placeholder.className = 'image-placeholder';
+//             placeholder.textContent = 'Failed to load gallery images.';
+//             galleryGrid.appendChild(placeholder);
+//         });
+// });
 </script>
